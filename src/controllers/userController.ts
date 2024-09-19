@@ -12,12 +12,6 @@ export const newUser = TryCatch(
   ) => {
     const { name, email, photo, gender, _id, dob } = req.body;
 
-    if (!name || !email || !photo || !gender || !_id || !dob) {
-      return next(
-        new ErrorHandler("Please enter all the required fields", 500)
-      );
-    }
-
     let user = await User.findById(_id);
 
     if (user) {
@@ -34,6 +28,12 @@ export const newUser = TryCatch(
       _id,
       dob: new Date(dob),
     });
+
+    if (!name || !email || !photo || !gender || !_id || !dob) {
+      return next(
+        new ErrorHandler("Please enter all the required fields", 500)
+      );
+    }
 
     return res.status(201).json({
       success: true,
